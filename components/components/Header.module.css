@@ -1,0 +1,20 @@
+.subMenu > li {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+.subMenu.active > li {
+  height: auto;
+  opacity: 1;
+}
+
+._2qp0Z {
+  color: #a4101d;
+}
+._3twZq {
+  background: #a4101d !important;
+}
+.chatHeader__gaeOA {
+  background-color: #f5222d;
+}
