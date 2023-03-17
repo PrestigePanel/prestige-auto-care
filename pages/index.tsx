@@ -107,7 +107,7 @@ const Home = () => {
     const slider = await fetchSlider();
     setSlider(slider)
   }
-  console.log(slider);
+
   
 
   useEffect(() => {
