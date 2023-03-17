@@ -22,6 +22,7 @@ import Cookie from "js-cookie";
 import { fetchSlider } from "../utils/fetchSlider";
 import { fetchMechanical } from "../utils/fetchMechanical";
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 type Props = {
   service: ServiceType[];
   about: AboutType[];
@@ -32,14 +33,10 @@ type Props = {
 };
 const inter = Inter({ subsets: ["latin"] });
 
-const Home = ({
-  service,
-  about,
-  banner,
-  workProcess,
-  products,
-  slider,
-}: Props) => {
+const Home = () => {
+  const [slider, setSlider] = useState<any>([])
+  const [loading, setLoading] = useState(false);
+
   const GetPremiumParts = dynamic(
     () => import("../components/about/GetPremiumParts")
   );
@@ -105,35 +102,57 @@ const Home = ({
     arrows: false,
   };
   // carousal settings End
+
+  const getSlider = async () => {
+    const slider = await fetchSlider();
+    setSlider(slider)
+  }
+  console.log(slider);
+  
+
+  useEffect(() => {
+    setLoading(true);
+
+    getSlider();
+   
+    setLoading(false);
+    return () => {
+      getSlider();
+    
+    };
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <Layout>
       <SliderComponent slider={slider} />
-      <BestServiceComponent service={service} />
-      <AboutCompanyComponent about={about} />
-      <WhyChooseUs about={about} />
-      <LatestProducts
+      {/* <BestServiceComponent service={service} /> */}
+      {/* <AboutCompanyComponent about={about} /> */}
+      {/* <WhyChooseUs about={about} /> */}
+      {/* <LatestProducts
         settings_003={settings_003}
         settings_005={settings_005}
         products={products}
-      />
-      <GetPremiumParts banner={banner} />
-      <WorkProcess workProcess={workProcess} />
-      <Testimonials settings_004={settings_004} />
+      /> */}
+      {/* <GetPremiumParts banner={banner} /> */}
+      {/* <WorkProcess workProcess={workProcess} /> */}
+      {/* <Testimonials settings_004={settings_004} /> */}
     </Layout>
   );
 };
 
-export const getServerSideProps = async () => {
-  const service: any[] = await fetchService();
-  const about: AboutType[] = await fetchAbout();
-  const banner: any[] = await fetchBanner();
-  const workProcess: any[] = await fetchProcess();
-  const products: ProductType[] = await fetchProducts();
-  const slider: SliderType[] = await fetchSlider();
+// export const getServerSideProps = async () => {
+//   const service: any[] = await fetchService();
+//   const about: AboutType[] = await fetchAbout();
+//   const banner: any[] = await fetchBanner();
+//   const workProcess: any[] = await fetchProcess();
+//   const products: ProductType[] = await fetchProducts();
+  
 
-  return {
-    props: { service, about, banner, workProcess, products, slider },
-  };
-};
+//   return {
+//     props: { service, about, banner, workProcess, products,  },
+//   };
+// };
 
 export default Home;
