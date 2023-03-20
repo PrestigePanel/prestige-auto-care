@@ -9,6 +9,8 @@ type Props = {
 };
 
 export default function AboutCompanyComponent({ about }: Props) {
+  console.log(about);
+  
   return (
     <div
       className="space position-relative overflow-hidden"
@@ -17,8 +19,10 @@ export default function AboutCompanyComponent({ about }: Props) {
       <div className="bg-shape1" />
       <div className="container">
         <div className="row flex-row-reverse">
+              {about && (
           <div className="col-xl-6">
             <div className="img-box-3">
+
               <div className="img1">
                 <img style={{width:"530px", height:"560px"}} src={urlFor(about[0].home_image_01).url()} alt="About" />
               </div>
@@ -33,6 +37,7 @@ export default function AboutCompanyComponent({ about }: Props) {
               </div>
             </div>
           </div>
+              )}
           <div className="col-xl-6">
             <div className="title-area mb-40">
               <span className="sub-title">About Company</span>
@@ -40,21 +45,14 @@ export default function AboutCompanyComponent({ about }: Props) {
               {about[0].home_title}
               </h2>
             </div>
-            <div className="nav tab-menu4" role="tablist">
-              <button
-                className="as-btn active"
-                id="nav-one-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#nav-one"
-                type="button"
-                role="tab"
-                aria-controls="nav-one"
-                aria-selected="true"
-              >
-                About Us
-              </button>{" "}
+            <div className="tab-pane fade show active" >
+            <div className="pt-2">
+                  <Link href="Appointment" className="as-btn">
+                  About Us
+                  </Link>
+                </div>
             </div>
-            <div className="tab-content why-tabcontent" id="why-tabContent">
+            <div className="tab-content why-tabcontent" id="why-tabContent" style={{marginTop:"20px"}}>
               <div
                 className="tab-pane fade show active"
                 id="nav-one"
@@ -97,12 +95,4 @@ export default function AboutCompanyComponent({ about }: Props) {
   );
 };
 
-export const getServerSideProps = async () => {
-  const about: AboutType[] = await fetchAbout();
 
-  return {
-    props: {
-      about,
-    },
-  };
-};

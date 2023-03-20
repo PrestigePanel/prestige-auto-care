@@ -48,7 +48,9 @@ const WhyChooseUs = ({ about }: Props) => {
                 </div>
               </div>
             )}
-            <img src={urlFor(about[0].choose_image).url()} alt="Video Image" />
+            {about && (
+            <img src={urlFor(about[0]?.choose_image).url()} alt="Video Image" />
+            )}
             <div
               className="play-btn popup-video"
               onClick={handleShowVideoPlayer}
@@ -64,13 +66,13 @@ const WhyChooseUs = ({ about }: Props) => {
               <h2 className="sec-title text-white">Why Choose Us?</h2>
             </div>
 
-            {about.map((data: any, index: any) =>
+            {about?.map((data: any, index: any) =>
               data.whyChooseUs.map((item: any, key: any) => (
                 <div key={key} className="feature-media">
                   <div className="feature-media_num">{Number(key) + 1}</div>
                   <div className="feature-media_content">
-                    <h3 className="feature-media_title">{item.mainTitle}</h3>
-                    <p className="feature-media_text">{item.description}</p>
+                    <h3 className="feature-media_title">{item?.mainTitle}</h3>
+                    <p className="feature-media_text">{item?.description}</p>
                   </div>
                 </div>
               ))
@@ -78,9 +80,11 @@ const WhyChooseUs = ({ about }: Props) => {
           </div>
         </div>
       </div>
+     
       <div className="body-shape4">
         <img src="assets/img/shape/shape_2.png" alt="shape" />
       </div>
+     
     </div>
   );
 };

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { client, urlFor } from "../../../client";
+import Layout from "../../../components/Layout";
 
 type Props = {};
 
@@ -94,16 +95,16 @@ const BlogDetails = ({ blog }: any) => {
                       <Link href="/">Home</Link>
                     </li>
                     <li>
-                      <Link href="about">About</Link>
+                      <Link href="/About">About</Link>
                     </li>
                     <li>
-                      <Link href="services">Service</Link>
+                      <Link href="/Services">Service</Link>
                     </li>
                     <li>
-                      <Link href="shop">Shop</Link>
+                      <Link href="/Shop">Shop</Link>
                     </li>
                     <li>
-                      <Link href="contact">Contact</Link>
+                      <Link href="/Contact">Contact</Link>
                     </li>
                   </ul>
                 </div>
@@ -130,7 +131,7 @@ const BlogDetails = ({ blog }: any) => {
                     Save up to <span className="text-theme">60% off</span>
                   </p> */}
                     </div>
-                    <Link href="Appointment" className="as-btn">
+                    <Link href="/Appointment" className="as-btn">
                       Get A Quote
                     </Link>
                   </div>

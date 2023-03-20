@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link'
 import React, { useEffect, useState } from "react";
 import { urlFor } from '../client'
+import Layout from '../components/Layout';
 import Pagination from '../components/Pagination'
 import { fetchBlog } from '../utils/fetchBlog'
 import { BlogType } from '../utils/type'
@@ -10,15 +11,17 @@ type Props = {
   blog: BlogType[];
 }
 
-export default function Blog({ blog }: any)  {
+export default function Blog()  {
+  const [blog, setBlog] = useState<any>([])
+  const [loading, setLoading] = useState(false);
   const Pagination = dynamic(() => import("../components/Pagination"));
-  const [prestigeBlog, setPrestigeBlog] = useState<[]>(blog);
+  // const [prestigeBlog, setPrestigeBlog] = useState<[]>(blog);
   const [currentPage, setCurrentPage] = useState<number | any>(1);
   const [blogPerPage, setBlogPerPage] = useState<number>(5);
   // pagination
   const indexLastBlog = currentPage * blogPerPage;
   const indexOfFirstBlog = indexLastBlog - blogPerPage;
-  const currentBlog = prestigeBlog.slice(
+  const currentBlog = blog.slice(
     indexOfFirstBlog,
     indexLastBlog
   );
@@ -37,9 +40,33 @@ export default function Blog({ blog }: any)  {
     });
   };
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const getBlog = async () => {
+    const blog = await fetchBlog();
+    setBlog(blog)
+    console.log(blog);
+  }
+
+  useEffect(() => {
+    setLoading(true);
+
+    getBlog();
+   
+
+    setLoading(false);
+    return () => {
+
+      getBlog();
+     
+
+
+    };
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
   
   return (
-    <>
+    <Layout>
      <div
         className="breadcumb-wrapper"
         data-bg-src=""
@@ -66,11 +93,14 @@ export default function Blog({ blog }: any)  {
             {currentBlog.map((blog: any, index: any) => (
 
             <div key={index} className="as-blog blog-single has-post-thumbnail">
+              
+
               <div className="blog-img">
                 <Link href={`/BlogDetails/${blog?._id}`}>
                   <img src={urlFor(blog?.image.asset._ref)?.url()} alt="Blog Image" />
                 </Link>
               </div>
+              
               <div className="blog-content">
                 <div className="blog-meta">
                   <p >
@@ -105,7 +135,7 @@ export default function Blog({ blog }: any)  {
            
            <Pagination
                 productPerPage={blogPerPage}
-                totalProducts={prestigeBlog.length}
+                totalProducts={blog.length}
                 paginate={paginate}
                 handlePrevious={handlePrevious}
                 handleNext={handleNext}
@@ -129,16 +159,16 @@ export default function Blog({ blog }: any)  {
                       <Link href="/">Home</Link>
                     </li>
                     <li>
-                      <Link href="about">About</Link>
+                      <Link href="About">About</Link>
                     </li>
                     <li>
-                      <Link href="services">Service</Link>
+                      <Link href="Services">Service</Link>
                     </li>
                     <li>
-                      <Link href="shop">Shop</Link>
+                      <Link href="Shop">Shop</Link>
                     </li>
                     <li>
-                      <Link href="contact">Contact</Link>
+                      <Link href="Contact">Contact</Link>
                     </li>
                   </ul>
               </div>
@@ -173,18 +203,9 @@ export default function Blog({ blog }: any)  {
     </section>
 
     {/* blog */}
-  </>
+  </Layout>
   
 
   )
 }
 
-export const getServerSideProps = async () => {
-  const blog: BlogType[] = await fetchBlog();
-  
-  return {
-    props: {
-      blog,
-    },
-  };
-};
